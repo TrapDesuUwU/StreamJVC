@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         StreamJVC
 // @namespace    http://tampermonkey.net/
-// @version      0.2.0
+// @version      0.2.1
 // @description  Essayer d'inclure les streamers Twitch JVC sur une page spéciale
 // @author       TrapDesuUwU
 // @match        *://www.jeuxvideo.com/*
@@ -87,7 +87,7 @@ function getStreamInfo(username, callback) {
         onload: function(response) {
             const html = response.responseText;
             const isLive = html.includes('property="og:video"');
-            if (!isLive)) {
+            if (!isLive) {
                 callback({ username, live: false });
                 return;
             }

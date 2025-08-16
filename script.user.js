@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         StreamJVC
 // @namespace    http://tampermonkey.net/
-// @version      0.1.0
+// @version      0.2.0
 // @description  Essayer d'inclure les streamers Twitch JVC sur une page spéciale
 // @author       TrapDesuUwU
 // @match        *://www.jeuxvideo.com/*
@@ -46,7 +46,7 @@ const streamers = ["trapdesuuwu"];
 
              divElement.insertAdjacentHTML("beforeend", `<div id="${username}"></div>`);
             const usernameElement = document.querySelector(`#${username}`);
-            usernameElement.insertAdjacentHTML("beforeend", `<div id="${embedId}_presentation">${username} ${info.title} </div>`);
+            usernameElement.insertAdjacentHTML("beforeend", `<div id="${embedId}_presentation">${username}</div>`);
              usernameElement.insertAdjacentHTML("beforeend", `<div id="${embedId}"></div>`);
 
             // Crée le player Twitch
@@ -86,19 +86,15 @@ function getStreamInfo(username, callback) {
         url: `https://www.twitch.tv/${username}`,
         onload: function(response) {
             const html = response.responseText;
-            if (!html.includes('"isLiveBroadcast":true')) {
+            const isLive = html.includes('property="og:video"');
+            if (!isLive)) {
                 callback({ username, live: false });
                 return;
             }
-            // Récupère le titre du stream
-            const metaMatch = html.match(/<meta\s+name="description"\s+content="([^"]+)"/);
-            const title = metaMatch[1];
-
 
             callback({
                 username,
-                live: true,
-                title
+                live: true
             });
         },
         onerror: function() {
